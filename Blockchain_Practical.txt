@@ -1,0 +1,1165 @@
+BLOCKCHAIN PRACTICAL:
+
+Practical 1: 
+Develop a secure messaging application where users can exchange messages securely using RSA encryption. Implement a mechanism for generating RSA key pairs and encrypting/decrypting messages. 
+
+Aim: A simple client class that generates the private and public keys by using the 
+built-in Python RSA algorithm and test it. 
+
+After Creating Ubuntu VM-> Login -> Open Terminal -> Install below packages 
+sudo apt-get update 
+[Enter password] 
+sudo apt-get install python3 
+[Type  y ] 
+sudo apt-get install python3-pip 
+pip3 install Crypto 
+pip3 install pycrypto 
+On terminal type below command to create new file  
+sudo nano practical1.py [press enter] 
+############################################################# 
+import hashlib 
+import random 
+import binascii 
+import datetime 
+import collections 
+from Crypto.PublicKey import RSA 
+from Crypto import Random 
+from Crypto.Cipher import PKCS1_v1_5 
+class Client: 
+def __init__(self): 
+random = Random.new().read 
+self._private_key = RSA.generate(1024, random) 
+self._public_key = self._private_key.publickey() 
+self._signer = PKCS1_v1_5.new(self._private_key) 
+@property    
+def identity(self): 
+return binascii.hexlify(self._public_key.exportKey(for
+ mat='DER')).decode('ascii') 
+Dinesh = Client() 
+print ("sender ",Dinesh.identity) 
+############################################################# 
+save the file -> ctrl +O to write ->  {enter} save -> ctrl +x 
+exit 
+To run this file  
+sudo python3 practical1.py 
+Output: 
+sender  30819f300d06092a864886f……… 
+
+
+Practical 2:
+Allow users to create multiple transactions and display them in an organised format.
+
+Aim: Create multiple transactions and display them 
+ 
+sudo nano practical2.py [press enter] 
+ 
+############################################################# 
+ 
+import hashlib 
+import binascii 
+import datetime 
+import collections 
+ 
+from Crypto.PublicKey import RSA 
+from Crypto import Random 
+from Crypto.Cipher import PKCS1_v1_5 
+from collections import OrderedDict 
+import Crypto 
+import Crypto.Random 
+from Crypto.Hash import SHA 
+from Crypto.Signature import PKCS1_v1_5 
+class Client: 
+    def __init__(self): 
+      random = Random.new().read 
+      self._private_key = RSA.generate(1024, random) 
+      self._public_key = self._private_key.publickey() 
+      self._signer = PKCS1_v1_5.new(self._private_key) 
+    @property 
+    def identity(self): 
+      return binascii.hexlify(self._public_key.exportKey(for
+ mat='DER')).decode('ascii') 
+ 
+class Transaction: 
+    def __init__(self, sender, recipient, value): 
+       self.sender = sender 
+       self.recipient = recipient 
+       self.value = value 
+       self.time = datetime.datetime.now() 
+ 
+    def to_dict(self): 
+       if self.sender == "Genesis": 
+          identity = "Genesis" 
+       else: 
+          identity = self.sender.identity 
+ 
+       return collections.OrderedDict({ 
+          'sender': identity, 
+          'recipient': self.recipient, 
+          'value': self.value, 
+          'time' : self.time}) 
+ 
+ 
+    def sign_transaction(self): 
+       private_key = self.sender._private_key 
+       signer = PKCS1_v1_5.new(private_key) 
+       h = SHA.new(str(self.to_dict()).encode('utf8')) 
+       return binascii.hexlify(signer.sign(h)).decode('ascii') 
+ 
+def display_transaction(transaction): 
+       #for transaction in transactions: 
+       dict = transaction.to_dict() 
+       print ("sender: " + dict['sender']) 
+       print ('-----') 
+       print ("recipient: " + dict['recipient']) 
+       print ('-----') 
+       print ("value: " + str(dict['value'])) 
+       print ('-----') 
+       print ("time: " + str(dict['time'])) 
+       print ('-----') 
+ 
+transactions = [] 
+ 
+A = Client() 
+B = Client() 
+t1 = Transaction( 
+   A, 
+   B.identity, 
+   15.0 
+) 
+t1.sign_transaction() 
+display_transaction (t1) 
+ 
+############################################################# 
+ 
+save the file -> ctrl +O to write ->  {enter} save -> ctrl +x 
+exit 
+ 
+To run this file  
+ 
+sudo python3 practical2.py 
+ 
+Output: 
+sender: 30819f300d0609……. ----- 
+recipient: 30819f300d06….. ----- 
+value: 15.0 ----- 
+time: 2022-04-26 04:00:21.070283
+
+
+Practical 3:
+Create a Python class named Transaction with attributes for sender, receiver, and amount. Implement a method within the class to transfer money from the sender's account to the receiver's account. 
+
+On terminal type below command to create new file  
+ 
+sudo nano practical3.py [press enter] 
+ 
+############################################################# 
+ 
+# following imports are required by PKI 
+import hashlib 
+import binascii 
+import datetime 
+import collections 
+ 
+from Crypto.PublicKey import RSA 
+from Crypto import Random 
+from Crypto.Cipher import PKCS1_v1_5 
+from collections import OrderedDict 
+import Crypto 
+import Crypto.Random 
+from Crypto.Hash import SHA 
+from Crypto.Signature import PKCS1_v1_5 
+class Client: 
+    def __init__(self): 
+      random = Random.new().read 
+      self._private_key = RSA.generate(1024, random) 
+      self._public_key = self._private_key.publickey() 
+      self._signer = PKCS1_v1_5.new(self._private_key) 
+    @property 
+    def identity(self): 
+      return binascii.hexlify(self._public_key.exportKey(for
+ mat='DER')).decode('ascii') 
+ 
+class Transaction: 
+    def __init__(self, sender, recipient, value): 
+       self.sender = sender 
+       self.recipient = recipient 
+       self.value = value 
+       self.time = datetime.datetime.now() 
+ 
+    def to_dict(self): 
+       if self.sender == "Genesis": 
+          identity = "Genesis" 
+       else: 
+          identity = self.sender.identity 
+ 
+       return collections.OrderedDict({ 
+          'sender': identity,
+ 'recipient': self.recipient, 
+          'value': self.value, 
+          'time' : self.time}) 
+ 
+    def sign_transaction(self): 
+       private_key = self.sender._private_key 
+       signer = PKCS1_v1_5.new(private_key) 
+       h = SHA.new(str(self.to_dict()).encode('utf8')) 
+       return binascii.hexlify(signer.sign(h)).decode('ascii') 
+ 
+def display_transaction(transaction): 
+       #for transaction in transactions: 
+       dict = transaction.to_dict() 
+       print ("sender: " + dict['sender']) 
+       print ('-----') 
+       print ("recipient: " + dict['recipient']) 
+       print ('-----') 
+       print ("value: " + str(dict['value'])) 
+       print ('-----') 
+       print ("time: " + str(dict['time'])) 
+       print ('-----') 
+ 
+transactions = [] 
+ 
+Dinesh = Client() 
+Ramesh = Client() 
+Suresh = Client() 
+ 
+t1 = Transaction( 
+   Dinesh, 
+   Ramesh.identity, 
+   15.0 
+) 
+ 
+t1.sign_transaction() 
+transactions.append(t1) 
+ 
+t2 = Transaction( 
+   Ramesh, 
+   Suresh.identity, 
+   25.0 
+) 
+t2.sign_transaction() 
+transactions.append(t2) 
+ 
+t3 = Transaction( 
+   Ramesh, 
+   Suresh.identity, 
+   200.0 
+)
+t3.sign_transaction() 
+transactions.append(t3) 
+tn=1 
+for t in transactions: 
+print("Transaction #",tn)   
+display_transaction (t) 
+tn=tn+1 
+print ('--------------') 
+############################################################# 
+save the file -> ctrl +O to write ->  {enter} save -> ctrl +x 
+exit 
+To run this file  
+sudo python3 practical3.py 
+Output: 
+Transaction # 1 
+sender: 30819f300d060… ----- 
+recipient: 30819f300d02a864…. ----- 
+value: 15.0 ----- 
+time: 2022-04-26 04:07:59.162213 ----- -------------- 
+Transaction # 2 
+sender: 30819f300d06092a8….. ----- 
+recipient: 30819f300d06092a8….. ----- 
+value: 25.0 ----- 
+time: 2022-04-26 04:07:59.165396 ----- -------------- 
+Transaction # 3 
+sender: 30819f300d06092a8648…. ----- 
+recipient: 30819f300d06092a86488… ----- 
+value: 200.0 ----- 
+time: 2022-04-26 04:07:59.168579
+
+
+Practical 4:
+4a. Implement a function to add new blocks to the miner and dump the blockchain. 
+
+Aim: Add blocks to the miner and dump the blockchain. 
+
+On terminal type below command to create new file  
+ 
+sudo nano practical4a.py [press enter] 
+ 
+############################################################# 
+ 
+# following imports are required by PKI 
+import hashlib 
+import random 
+import binascii 
+import datetime 
+import collections 
+ 
+from Crypto.PublicKey import RSA 
+from Crypto import Random 
+from Crypto.Cipher import PKCS1_v1_5 
+from collections import OrderedDict 
+import Crypto 
+import Crypto.Random 
+from Crypto.Hash import SHA 
+from Crypto.Signature import PKCS1_v1_5 
+ 
+class Client: 
+    def __init__(self): 
+      random = Random.new().read 
+      self._private_key = RSA.generate(1024, random) 
+      self._public_key = self._private_key.publickey() 
+      self._signer = PKCS1_v1_5.new(self._private_key) 
+    @property 
+    def identity(self): 
+      return binascii.hexlify(self._public_key.exportKey(for
+ mat='DER')).decode('ascii') 
+ 
+class Transaction: 
+    def __init__(self, sender, recipient, value): 
+       self.sender = sender 
+       self.recipient = recipient 
+       self.value = value 
+       self.time = datetime.datetime.now() 
+ 
+    def to_dict(self): 
+       if self.sender == "Genesis": 
+          identity = "Genesis" 
+       else: 
+          identity = self.sender.identity
+ return collections.OrderedDict({ 
+          'sender': identity, 
+          'recipient': self.recipient, 
+          'value': self.value, 
+          'time' : self.time}) 
+ 
+    def sign_transaction(self): 
+       private_key = self.sender._private_key 
+       signer = PKCS1_v1_5.new(private_key) 
+       h = SHA.new(str(self.to_dict()).encode('utf8')) 
+       return binascii.hexlify(signer.sign(h)).decode('ascii') 
+ 
+def display_transaction(transaction): 
+       #for transaction in transactions: 
+       dict = transaction.to_dict() 
+       print ("sender: " + dict['sender']) 
+       print ('-----') 
+       print ("recipient: " + dict['recipient']) 
+       print ('-----') 
+       print ("value: " + str(dict['value'])) 
+       print ('-----') 
+       print ("time: " + str(dict['time'])) 
+       print ('-----') 
+ 
+def dump_blockchain (self): 
+   print ("Number of blocks in the chain: " + str(len (self))) 
+   for x in range (len(TPCoins)): 
+      block_temp = TPCoins[x] 
+      print ("block # " + str(x)) 
+      for transaction in block_temp.verified_transactions: 
+         display_transaction (transaction) 
+         print ('--------------') 
+      print ('=====================================') 
+       
+class Block: 
+   def __init__(self): 
+      self.verified_transactions = [] 
+      self.previous_block_hash = "" 
+      self.Nonce = "" 
+       
+def sha256(message): 
+      return hashlib.sha256(message.encode('ascii')).hexdige
+ st() 
+     
+def mine(message, difficulty=1): 
+   assert difficulty >= 1 
+   #if(difficulty <1): 
+   #        return 
+   #'1'*3=> '111' 
+   prefix = '1' * difficulty 
+ for i in range(1000): 
+      digest = sha256(str(hash(message)) + str(i)) 
+      if digest.startswith(prefix): 
+         return i #i= nonce value 
+ 
+A = Client() 
+B =Client() 
+C =Client() 
+t0 = Transaction ( 
+   "Genesis", 
+   A.identity, 
+   500.0 
+) 
+ 
+t1 = Transaction ( 
+   A, 
+   B.identity, 
+   40.0 
+) 
+t2 = Transaction ( 
+   A, 
+   C.identity, 
+   70.0 
+) 
+t3 = Transaction ( 
+   B, 
+   C.identity, 
+   700.0 
+) 
+#blockchain 
+TPCoins = [] 
+ 
+block0 = Block() 
+block0.previous_block_hash = None 
+Nonce = None 
+block0.verified_transactions.append (t0) 
+digest = hash (block0) 
+last_block_hash = digest #last_block_hash it is hash of block0 
+TPCoins.append (block0) 
+ 
+block1 = Block() 
+block1.previous_block_hash = last_block_hash 
+block1.verified_transactions.append (t1) 
+block1.verified_transactions.append (t2) 
+block1.Nonce=mine (block1, 2) 
+digest = hash (block1) 
+last_block_hash = digest 
+TPCoins.append (block1) 
+ 
+block2 = Block()
+block2.previous_block_hash = last_block_hash 
+block2.verified_transactions.append (t3) 
+Nonce = mine (block2, 2) 
+block2.Nonce=mine (block2, 2) 
+digest = hash (block2) 
+last_block_hash = digest 
+TPCoins.append (block2) 
+dump_blockchain(TPCoins) 
+############################################################# 
+save the file -> ctrl +O to write ->  {enter} save -> ctrl +x 
+exit 
+To run this file  
+sudo python3 practical4a.py 
+Output: 
+Number of blocks in the chain: 3 
+block # 0 
+sender: Genesis ----- 
+recipient: 30819f300d0609….. ----- 
+value: 500.0 ----- 
+time: 2022-04-26 04:30:59.070952 ----- -------------- 
+===================================== 
+block # 1 
+sender: 30819f300d06092a86….. ----- 
+recipient: 30819f300d06092a….. ----- 
+value: 40.0 ----- 
+time: 2022-04-26 04:30:59.071076 ----- -------------- 
+sender: 30819f300d06092a86…. ----- 
+recipient: 30819f300d06092a…. ----- 
+value: 70.0 ----- 
+time: 2022-04-26 04:30:59.071174 ----- 
+15 
+-------------- 
+===================================== 
+block # 2 
+sender: 30819f300d06092a…. ----- 
+recipient: 30819f300d06092a…. ----- 
+value: 700.0 ----- 
+time: 2022-04-26 04:30:59.071272 
+
+
+Practical 4:
+4b. Write a python program to demonstrate mining. 
+
+Aim: Create a mining function and test it. 
+
+On terminal type below command to create new file  
+sudo nano practical4b.py [press enter] 
+############################################################# 
+import hashlib 
+def sha256(message): 
+return hashlib.sha256(message.encode('ascii')).hexdige
+ st() 
+def mine(message, difficulty=1): 
+assert difficulty >= 1 
+#if(difficulty <1): 
+#        
+return 
+#'1'*2=> '11' 
+prefix = '1' * difficulty  
+print("prefix",prefix) 
+for i in range(1000): 
+digest = sha256(str(hash(message)) + str(i)) 
+print("testing=>"+digest) 
+if digest.startswith(prefix): 
+print ("after " + str(i) + " iterations found nonce
+ : "+ digest) 
+return i #i= nonce value 
+mine ("test message",2) 
+############################################################# 
+save the file -> ctrl +O to write ->  {enter} save -> ctrl +x 
+exit 
+To run this file  
+sudo python3 practical4b.py 
+Output: 
+prefix 11 
+testing=>ab7d1f2b4ba63486a274d7a8c5e4dde793c2d47069ae19ab832
+ dc1177622a182 
+testing=>cf0a36c4f0c3107cba7a8ebe690db004a01f659bc0aed3b327f
+ 01fab0065bf41
+
+
+Practical 5:
+Demonstrate the use of the Bitcoin Core API to interact with a Bitcoin Core node. 
+
+Aim: Demonstrate the use of Bitcoin Core API. 
+
+Open Python IDLE and create new Script. 
+############################################################# 
+from bitcoinlib.wallets import Wallet 
+w = Wallet.create('Wallet6') 
+key1 = w.get_key() 
+print('Wallet Address:',key1.address) 
+w.scan() 
+print(w.info()) 
+############################################################ 
+Open CMD and install bitcoinlib package 
+pip install bitcoinlib 
+After installing package run the program from Python IDLE 
+More Detail: https://pypi.org/project/bitcoinlib/ 
+
+
+Practical 6:
+Write a Solidity program that demonstrates various types of functions including regular functions, view functions, pure functions, and the fallback function. 
+
+Aim: Write a Solidity Program for Function, View Function, Pure Function & 
+Fallback Function. 
+A) Function: 
+A function is a group of reusable code which can be called anywhere in your program. This 
+eliminates the need of writing the same code again and again. It helps programmers in 
+writing modular codes. Functions allow a programmer to divide a big program into a 
+number of small and manageable functions. 
+pragma solidity ^0.5.0; 
+contract SolidityTest { 
+constructor() public{ 
+} 
+function getResult() public view returns(string memory){ 
+uint a = 1; 
+uint b = 2; 
+uint result = a + b; 
+return integerToString(result); 
+} 
+function integerToString(uint _i) internal pure 
+returns (string memory) { 
+if (_i == 0) { 
+return "0"; 
+} 
+uint j = _i; 
+uint len; 
+while (j != 0) {
+len++; 
+j /= 10; 
+} 
+bytes memory bstr = new bytes(len); 
+uint k = len - 1; 
+while (_i != 0) { 
+bstr[k--] = byte(uint8(48 + _i % 10)); 
+_i /= 10; 
+} 
+return string(bstr);//access local variable 
+} 
+} 
+B) View Function: 
+View functions ensure that they will not modify the state. A function can be declared 
+as view. Getter method are by default view functions. 
+pragma solidity ^0.5.0; 
+contract Test { 
+function getResult() public view returns(uint product, uint 
+sum){ 
+uint a = 1; // local variable 
+uint b = 2; 
+product = a * b; 
+sum = a + b; 
+} 
+} 
+C) Pure Function: 
+Pure functions ensure that they not read or modify the state. A function can be declared 
+as pure. Pure functions can use the revert() and require() functions to revert potential state 
+changes if an error occurs. 
+pragma solidity ^0.5.0; 
+contract Test { 
+function getResult() public pure returns(uint product, uint 
+sum){ 
+uint a = 1; 
+uint b = 2; 
+product = a * b; 
+sum = a + b; 
+} 
+} 
+D) Fallback Function: 
+Fallback function is a special function available to a contract. 
+pragma solidity ^0.5.0; 
+contract Test { 
+uint public x ; 
+function() external { x = 1; } 
+} 
+contract Sink { 
+function() external payable { } 
+} 
+contract Caller { 
+function callTest(Test test) public returns (bool) { 
+ 
+(bool success,) = 
+address(test).call(abi.encodeWithSignature("nonExistingFunct
+ ion()")); 
+require(success); 
+// test.x is now 1 
+Address payable testPayable = 
+address(uint160(address(test))); 
+// Sending ether to Test contract, 
+// the transfer will fail, i.e. this returns false here. 
+return (testPayable.send(2 ether)); 
+} 
+function callSink(Sink sink) public returns (bool) { 
+address payable sinkPayable = address(sink); 
+return (sinkPayable.send(2 ether)); 
+} 
+}
+
+
+Practical 7:
+Write a Solidity program that demonstrates function overloading, mathematical functions, and cryptographic functions. 
+
+Aim: Write a Solidity Program for Function Overloading, Mathematical Functions 
+& Cryptographic Functions. 
+A) Function Overloading: 
+The definition of the function must differ from each other by the types and/or the number 
+of arguments in the argument list. You cannot overload function declarations that differ 
+only by return type. 
+pragma solidity ^0.5.0; 
+contract Test { 
+function getSum(uint a, uint b) public pure returns(uint){ 
+return a + b; 
+} 
+function getSum(uint a, uint b, uint c ) public pure 
+returns(uint){ 
+return a + b + c; 
+} 
+function 
+callSumWithTwoArguments() 
+returns(uint){ 
+return getSum(2,2); 
+} 
+function 
+callSumWithThreeArguments() 
+returns(uint){ 
+return getSum(1,2,4); 
+} 
+} 
+B) Mathematical Function: 
+Solidity provides inbuilt mathematical functions as well. 
+pragma solidity ^0.5.0; 
+contract Test { 
+public 
+public 
+function callAddMod() public pure returns(uint){ 
+return addmod(4, 5, 3); 
+} 
+function callMulMod() public pure returns(uint){ 
+return mulmod(4, 5, 3); 
+} 
+} 
+pure 
+pure 
+23 
+C) Cryptographic Function: 
+BLOCKCHAIN JOURNAL 
+Solidity provides inbuilt cryptographic functions as well. 
+pragma solidity ^0.5.0; 
+contract Test { 
+function callKeccak256() public pure returns(bytes32 result){ 
+return keccak256("ABC"); 
+} 
+}
+
+
+Practical 8:
+8a. Write a Solidity program that demonstrates various features including contracts, inheritance, constructors, abstract contracts, interfaces. 
+
+Aim: Write a Solidity Program for Contract, Inheritance, Constructors, Abstract Contracts, Interface. 
+
+A) Contract: 
+Contract in Solidity is similar to a Class in C++. A Contract have following properties. 
+Constructor − A special function declared with constructor keyword which will be 
+executed once per contract and is invoked when a contract is created. 
+State Variables − Variables per Contract to store the state of the contract. 
+Functions − Functions per Contract which can modify the state variables to alter the 
+state of a contract. 
+// Calling function from external contract 
+pragma solidity ^0.5.0; 
+contract C { 
+//private state variable 
+uint private data; 
+//public state variable 
+uint public info; 
+//constructor 
+constructor() public { 
+info = 10; 
+} 
+//private function 
+function increment(uint a) private pure returns(uint) { 
+return a + 1; } 
+//public function 
+function updateData(uint a) public { data = a; } 
+function getData() public view returns(uint) { return data; 
+} 
+function compute(uint a, uint b) internal pure returns (uint) 
+{ return a + b; } 
+} 
+//Derived Contract 
+contract E is C { 
+uint private result; 
+C private c; 
+constructor() public { 
+c = new C(); 
+} 
+function getComputedResult() public { 
+result = compute(3, 5); 
+} 
+function getResult() public view returns(uint) { return 
+result; } 
+25 
+BLOCKCHAIN JOURNAL 
+function getData() public view returns(uint) { return 
+c.info(); } 
+} 
+B) Inheritance: 
+Inheritance is a way to extend functionality of a contract. Solidity supports both single as 
+well as multiple inheritance. 
+// Solidity program to 
+// demonstrate 
+// Single Inheritance 
+pragma solidity >=0.4.22 <0.6.0; 
+// Defining contract 
+contract parent{ 
+// Declaring internal 
+// state variable 
+uint internal sum; 
+// Defining external function 
+// to set value of internal 
+// state variable sum 
+function setValue() external { 
+uint a = 20; 
+uint b = 20; 
+sum = a + b; 
+} 
+} 
+// Defining child contract 
+contract child is parent{ 
+// Defining external function 
+// to return value of 
+// internal state variable sum 
+function getValue() external view returns(uint) { 
+return sum; 
+} 
+} 
+// Defining calling contract 
+contract caller { 
+// Creating child contract object 
+child cc = new child(); 
+// Defining function to call 
+// setValue and getValue functions 
+function testInheritance() public { 
+cc.setValue();
+}
+
+function result() public view returns(uint ){ 
+return cc.getValue(); 
+} 
+} 
+C) Constructors: 
+Constructor is a special function declared using constructor keyword. It is an optional 
+function and is used to initialize state variables of a contract. Following are the key 
+characteristics of a constructor. 
+A contract can have only one constructor. 
+A constructor code is executed once when a contract is created and it is used to initialize 
+contract state. 
+A constructor can be either public or internal. 
+An internal constructor marks the contract as abstract. 
+In case, no constructor is defined, a default constructor is present in the contract. 
+pragma solidity ^0.5.0; 
+contract Base { 
+uint data; 
+constructor(uint _data) public { 
+data = _data; 
+} 
+function getresult()public view returns(uint){ 
+return data; 
+} 
+} 
+contract Derived is Base (5) { 
+constructor() public {} 
+} 
+// Indirect Initialization of Base Constructor 
+pragma solidity ^0.5.0; 
+contract Base { 
+uint data; 
+constructor(uint _data) public { 
+data = _data; 
+} 
+function getresult()public view returns(uint){ 
+return data; 
+} 
+} 
+contract Derived is Base { 
+constructor(uint _info) Base(_info * _info) public {} 
+} 
+27 
+BLOCKCHAIN JOURNAL 
+D) Abstract Contracts: 
+Abstract Contract is one which contains at least one function without any implementation. 
+Such a contract is used as a base contract. Generally an abstract contract contains both 
+implemented as well as abstract functions. Derived contract will implement the abstract 
+function and use the existing functions as and when required. 
+pragma solidity ^0.5.0; 
+contract Calculator { 
+function getResult() public view returns(uint); 
+} 
+contract Test is Calculator { 
+function getResult() public view returns(uint) { 
+uint a = 4; 
+uint b = 2; 
+uint result = a + b; 
+return result; 
+} 
+} 
+E) Interfaces: 
+Interfaces are similar to abstract contracts and are created using interface keyword. 
+Following are the key characteristics of an interface. 
+Interface can not have any function with implementation. 
+Functions of an interface can be only of type external. 
+Interface can not have constructor. 
+Interface can not have state variables. 
+pragma solidity ^0.5.0; 
+interface Calculator { 
+function getResult() external view returns(uint); 
+} 
+contract Test is Calculator { 
+constructor() public {} 
+function getResult() external view returns(uint){ 
+uint a = 5; 
+uint b = 2; 
+uint result = a + b; 
+return result; 
+} 
+}
+
+Practical 8:
+8b. Write a Solidity program that demonstrates use of libraries, assembly, events, and error handling.
+
+Aim: Write a Solidity Program for Libraries, Assembly, Events, Error Handling. 
+
+A) Libraries: 
+Libraries are similar to Contracts but are mainly intended for reuse. A Library contains 
+functions which other contracts can call. Solidity have certain restrictions on use of a 
+Library. 
+pragma solidity ^0.5.0; 
+library Search { 
+function indexOf(uint[] storage self, uint value) public view 
+returns (uint) { 
+for (uint i = 0; i < self.length; i++) 
+if (self[i] == value) return i; 
+return uint(-1);} 
+} 
+contract Test { 
+uint[] data; 
+uint value; 
+uint index; 
+constructor() public { 
+data.push(6); 
+data.push(7); 
+data.push(8); 
+data.push(9); 
+data.push(10); 
+} 
+function isValuePresent() external { 
+value = 9; 
+//search if value is present in the array using Library 
+function 
+index = Search.indexOf(data, value); 
+} 
+function getresult() public view returns(uint){ 
+return index; 
+} 
+} 
+B)  Assembly: 
+Solidity provides an option to use assembly language to write inline assembly within 
+Solidity source code. We can also write a standalone assembly code which then be 
+converted to bytecode. Standalone Assembly is an intermediate language for a Solidity 
+compiler and it converts the Solidity code into a Standalone Assembly and then to byte 
+code. We can used the same language used in Inline Assembly to write code in a 
+Standalone assembly. 
+pragma solidity ^0.5.0; 
+library Sum { 
+29 
+BLOCKCHAIN JOURNAL 
+function sumUsingInlineAssembly(uint[] memory _data) public 
+pure returns (uint o_sum) { 
+for (uint i = 0; i < _data.length; ++i) { 
+assembly { 
+o_sum := add(o_sum, mload(add(add(_data, 0x20), mul(i, 
+0x20)))) 
+}} 
+} 
+} 
+contract Test { 
+uint[] data; 
+constructor() public { 
+data.push(1); 
+data.push(2); 
+data.push(3); 
+data.push(4); 
+data.push(5); 
+} 
+function sum() external view returns(uint){ 
+return Sum.sumUsingInlineAssembly(data); 
+} 
+} 
+C) Events: 
+Event is an inheritable member of a contract. An event is emitted, it stores the arguments 
+passed in transaction logs. These logs are stored on blockchain and are accessible using 
+address of the contract till the contract is present on the blockchain. An event generated is 
+not accessible from within contracts, not even the one which have created and emitted 
+them. 
+// Solidity program to demonstrate 
+// creating an event 
+pragma solidity ^0.4.21; 
+// Creating a contract 
+contract eventExample { 
+// Declaring state variables 
+uint256 public value = 0; 
+// Declaring an event 
+event Increment(address owner); 
+// Defining a function for logging event 
+function getValue(uint _a, uint _b) public { 
+emit Increment(msg.sender); 
+value = _a + _b; 
+} 
+} 
+30 
+BLOCKCHAIN JOURNAL 
+D) Error Handling: 
+Solidity provides various functions for error handling. Generally when an error occurs, the 
+state is reverted back to its original state. Other checks are to prevent unauthorized code 
+access. 
+Solidity program to demonstrate require statement. 
+// Solidity program to 
+// demonstrate require 
+// statement 
+pragma solidity ^0.5.0; 
+// Creating a contract 
+contract requireStatement { 
+// Defining function to 
+// check input 
+function checkInput(uint8 _input) public view returns(string 
+memory){ 
+require(_input >= 0, "invalid uint"); 
+require(_input <= 255, "invalid uint8"); 
+return "Input is Uint8"; 
+} 
+// Defining function to 
+// use require statement 
+function Odd(uint _input) public view returns(bool){ 
+require(_input % 2 != 0); 
+return true; 
+} 
+} 
+Solidity program to demonstrate assert statement. 
+// Solidity program to 
+// demonstrate assert 
+// statement 
+pragma solidity ^0.5.0; 
+// Creating a contract 
+contract assertStatement { 
+// Defining a state variable 
+bool result; 
+// Defining a function 
+// to check condition 
+function checkOverflow(uint8 _num1, uint8 _num2) public { 
+uint8 sum = _num1 + _num2; 
+assert(sum<=255); 
+result = true; 
+} 
+// Defining a function to 
+31 
+BLOCKCHAIN JOURNAL 
+// print result of assert 
+// statement 
+function getResult() public view returns(string memory){ 
+if(result == true){ 
+return "No Overflow"; 
+} 
+else{ 
+return "Overflow exist"; 
+} 
+} 
+} 
+Solidity program to demonstrate revert statement. 
+// Solidity program to 
+// demonstrate revert 
+pragma solidity ^0.5.0; 
+// Creating a contract 
+contract revertStatement { 
+// Defining a function 
+// to check condition 
+function checkOverflow(uint _num1, uint _num2) public view 
+returns( 
+string memory, uint) { 
+uint sum = _num1 + _num2; 
+if(sum < 0 || sum > 255){ 
+revert(" Overflow Exist"); 
+} 
+else{ 
+return ("No Overflow", sum); 
+} 
+} 
+}
+
+Practical 9:
+Build a decentralized application (DApp) using Angular for the front end and Truffle along with Ganache CLI for the back end. 
+
+Aim: Build Dapps with angular [using truffle and ganache cli 
+
+Step 1: Install the required package –on new terminal 1 type these commands 
+sudo apt-get -y install curl git vim build-essential 
+sudo apt-get install curl software-properties-common 
+sudo apt install npm 
+sudo npm install -g web3 
+sudo apt-get install nodejs 
+sudo apt install python3.9 
+curl -sL https://deb.nodesource.com/setup_10.x | sudo bash - 
+sudo npm install --global node-sass@latest 
+sudo npm install -g truffle@latest 
+sudo npm install -g  ganache-cli 
+export NODE_OPTIONS=--openssl-legacy-provider 
+Step 2: Create a new directory 
+mkdir myproject 
+cd myproject 
+Step 3: Initialize the project folder 
+truffle init 
+######################## 
+////to update npm// 
+sudo npm cache clean -f 
+sudo npm install -g n 
+sudo n latest 
+###################### 
+Step 4: Now create a new contract 
+nano contracts/HelloWorld.sol  
+Step 5: Add the following code in HelloWorld.sol 
+pragma solidity ^0.8.0; 
+contract HelloWorld { 
+function sayHello() public pure returns(string memory){ 
+return("hello world"); 
+} 
+} 
+Step 6: Edit default configuration file 
+nano migrations/1_initial_migration.js  
+33 
+BLOCKCHAIN JOURNAL 
+Step 7: Edit this line in the file 
+const Migrations = artifacts.require("HelloWorld"); 
+module.exports = function (deployer) { 
+deployer.deploy(Migrations,"hello"); 
+}; 
+Step 8: Edit network configuration file 
+sudo nano truffle-config.js  
+Remove all line (press CTRL +K) from the file and add the following lines 
+######################### 
+module.exports = { 
+networks: { 
+development: { 
+host: "127.0.0.1", 
+port: 8545, 
+network_id: "*", 
+} 
+} 
+} 
+######################### 
+Step 9: start ganache-cli –Switch/Open to terminal 2 
+ganache-cli 
+Step 10: deploy the truffle deploy- On terminal 1  
+truffle deploy 
+[Note contract address]
+truffle console 
+Step 11: Get reference of contract 
+contract 
+= 
+await 
+HelloWorld.at('0x2C403EE1b30F56C0c773089c1Eb9DddF1499C969') 
+[Replace '0x2C403EE1b30F56C0c773089c1Eb9DddF1499C969' with 
+your contact address; every time you compile/deploy a new 
+contract address will be generated] 
+Step 12: Call the function from the contract 
+a = await contract.sayHello() 
+Step 13: Print output on the screen 
+
+
+
+Practical 10:
+Install and demonstrate use of hyperledger Iroha.
+
+Aim: Install hyperledger-Irhoa 
+Step 1: install docker 
+sudo apt-get install curl 
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | 
+sudo apt-key add - 
+sudo 
+add-apt-repository 
+"deb 
+[arch=amd64] 
+https://download.docker.com/linux/ubuntu $(lsb_release -cs) 
+stable" 
+sudo apt-get update 
+apt-cache policy docker-ce 
+sudo apt-get install -y docker-ce 
+Step 2: create docker network 
+sudo docker network create mithilesh-iroha-network 
+Step 3: Add PostgreSQL to our network 
+sudo 
+docker 
+5432:5432 
+run --name 
+some-postgres -e 
+POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mysecretpassword -p --network=mithilesh-iroha-network 
+postgres:9.5 -d 
+Step 4: create a volume of persistant storage named "blockstore" to store the blocks for our 
+blockchain 
+sudo docker volume create blockstore 
+Step 5: Download the Iroha code from github. 
+sudo apt-get install git 
+git clone -b develop https://github.com/hyperledger/iroha -
+depth=1 
+Step 6: run the Iroha docker container 
+sudo docker run -it --name iroha \ -p 50051:50051 \ -v $(pwd)/iroha/example:/opt/iroha_data \ -v blockstore:/tmp/block_store \ --network=mithilesh-iroha-network \ --entrypoint=/bin/bash \ 
+hyperledger/iroha:latest 
+Step 7: run Iroha 
+irohad --config config.docker --genesis_block genesis.block --keypair_name node0 
+37 
+Step 8: Open a new terminal 
+BLOCKCHAIN JOURNAL 
+Step 9: Attach the docker container to our terminal 
+sudo docker exec -it iroha /bin/bash 
+Step 10: Launch the iroha-cli tool and login as admin@test. 
+iroha-cli -account_name admin@test 
+Select 1 – for new transaction
+Select 14- for creating new coin 
+Now type Asset name: mscit 
+Domain id: test 
+Asset precision: 2 
+And select option 3 to add more command
+Now select option 16 to add asset quantity 
+Asset id: mscit#test 
+Amount: 16.35 
+Select option 4- send request to Iroha peer 
+Select option 2 –for query 
+Select option 8- for assets
+Select option 1 
+Enter peer : 127.0.0.1 
+Port: 50051 
