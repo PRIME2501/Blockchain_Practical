@@ -1,0 +1,49 @@
+PRACTICAL 7:
+
+Practical 7: Write a program for character recognition using RNN and compare it with CNN. 
+
+Code: 
+import tensorflow as tf 
+import tensorflow_datasets as tfds 
+import matplotlib.pyplot as plt 
+ 
+# Load EMNIST Dataset (letters) 
+(ds_train, ds_test), ds_info = tfds.load( 
+    'emnist/letters', 
+    split=['train', 'test'], 
+    shuffle_files=True, 
+    as_supervised=True, 
+    with_info=True 
+) 
+ 
+def normalize_img(image, label): 
+    image = tf.cast(image, tf.float32) / 255.0 
+    return image, label 
+ 
+BATCH_SIZE = 128 
+ 
+ds_train = 
+ds_train.map(normalize_img).batch(BATCH_SIZE).prefetch(tf.data.AUTOT
+ UNE) 
+ds_test = 
+ds_test.map(normalize_img).batch(BATCH_SIZE).prefetch(tf.data.AUTOTU
+ NE) 
+
+ 
+Output: 
+WARNING:absl:Variant folder 
+/root/tensorflow_datasets/emnist/letters/3.1.0 has no dataset_info.json 
+Downloading and preparing dataset Unknown size (download: Unknown size, 
+generated: Unknown size, total: Unknown size) to 
+/root/tensorflow_datasets/emnist/letters/3.1.0... 
+Dl Completed...: 100% 
+ 1/1 [00:54<00:00, 50.99s/ url] 
+Dl Size...: 100% 
+ 535/535 [00:54<00:00, 11.73 MiB/s] 
+Extraction completed...: 100% 
+ 30/30 [00:54<00:00, 54.67s/ file] 
+Extraction completed...: 100% 
+ 4/4 [00:00<00:00,  4.32 file/s] 
+Dataset emnist downloaded and prepared to 
+/root/tensorflow_datasets/emnist/letters/3.1.0. Subsequent calls will 
+reuse this data. 

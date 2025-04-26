@@ -1,0 +1,268 @@
+PRACTICAL 4:
+
+Practical 4: Write a program to implement deep learning Techniques for image segmentation. 
+
+Code: 
+import tensorflow as tf 
+from tensorflow.keras import layers, models 
+ 
+# Define the U-Net model 
+def unet_model(input_size=(128, 128, 3)): 
+    inputs = layers.Input(input_size) 
+ 
+    # Encoder 
+    conv1 = layers.Conv2D(64, 3, activation='relu', 
+padding='same')(inputs) 
+    conv1 = layers.Conv2D(64, 3, activation='relu', 
+padding='same')(conv1) 
+    pool1 = layers.MaxPooling2D(pool_size=(2, 2))(conv1) 
+ 
+    conv2 = layers.Conv2D(128, 3, activation='relu', 
+padding='same')(pool1) 
+    conv2 = layers.Conv2D(128, 3, activation='relu', 
+padding='same')(conv2) 
+    pool2 = layers.MaxPooling2D(pool_size=(2, 2))(conv2) 
+ 
+    conv3 = layers.Conv2D(256, 3, activation='relu', 
+padding='same')(pool2) 
+    conv3 = layers.Conv2D(256, 3, activation='relu', 
+padding='same')(conv3) 
+    pool3 = layers.MaxPooling2D(pool_size=(2, 2))(conv3) 
+ 
+    conv4 = layers.Conv2D(512, 3, activation='relu', 
+padding='same')(pool3) 
+    conv4 = layers.Conv2D(512, 3, activation='relu', 
+padding='same')(conv4) 
+    pool4 = layers.MaxPooling2D(pool_size=(2, 2))(conv4) 
+ 
+    # Bottleneck 
+    conv5 = layers.Conv2D(1024, 3, activation='relu', 
+padding='same')(pool4) 
+    conv5 = layers.Conv2D(1024, 3, activation='relu', 
+padding='same')(conv5) 
+ 
+    # Decoder 
+    up6 = layers.Conv2D(512, 2, activation='relu', 
+padding='same')(layers.UpSampling2D(size=(2, 2))(conv5)) 
+    merge6 = layers.concatenate([conv4, up6], axis=3) 
+    conv6 = layers.Conv2D(512, 3, activation='relu', 
+padding='same')(merge6) 
+    conv6 = layers.Conv2D(512, 3, activation='relu', 
+padding='same')(conv6) 
+ 
+    up7 = layers.Conv2D(256, 2, activation='relu', 
+padding='same')(layers.UpSampling2D(size=(2, 2))(conv6)) 
+    merge7 = layers.concatenate([conv3, up7], axis=3) 
+    conv7 = layers.Conv2D(256, 3, activation='relu', 
+padding='same')(merge7) 
+    conv7 = layers.Conv2D(256, 3, activation='relu', 
+padding='same')(conv7) 
+ 
+    up8 = layers.Conv2D(128, 2, activation='relu', 
+padding='same')(layers.UpSampling2D(size=(2, 2))(conv7)) 
+    merge8 = layers.concatenate([conv2, up8], axis=3) 
+    conv8 = layers.Conv2D(128, 3, activation='relu', 
+padding='same')(merge8) 
+    conv8 = layers.Conv2D(128, 3, activation='relu', 
+padding='same')(conv8) 
+ 
+    up9 = layers.Conv2D(64, 2, activation='relu', 
+padding='same')(layers.UpSampling2D(size=(2, 2))(conv8)) 
+    merge9 = layers.concatenate([conv1, up9], axis=3) 
+    conv9 = layers.Conv2D(64, 3, activation='relu', 
+padding='same')(merge9) 
+    conv9 = layers.Conv2D(64, 3, activation='relu', 
+padding='same')(conv9) 
+    conv9 = layers.Conv2D(2, 3, activation='relu', 
+padding='same')(conv9) 
+ 
+    conv10 = layers.Conv2D(1, 1, activation='sigmoid')(conv9) 
+ 
+    model = models.Model(inputs=inputs, outputs=conv10) 
+ 
+    model.compile(optimizer='adam', loss='binary_crossentropy', 
+metrics=['accuracy']) 
+ 
+    return model 
+ 
+# Create the model 
+model = unet_model() 
+ 
+# Summary of the model 
+model.summary() 
+ 
+from tensorflow.keras.preprocessing.image import ImageDataGenerator 
+ 
+# Define data generators 
+data_gen_args = dict(rescale=1./255) 
+image_datagen = ImageDataGenerator(**data_gen_args) 
+mask_datagen = ImageDataGenerator(**data_gen_args) 
+ 
+# Provide the paths to your images and masks 
+image_generator = image_datagen.flow_from_directory( 
+    'path_to_images', 
+    class_mode=None, 
+    target_size=(128, 128), 
+    batch_size=32, 
+    seed=42) 
+ 
+mask_generator = mask_datagen.flow_from_directory( 
+    'path_to_masks', 
+    class_mode=None, 
+    color_mode='grayscale', 
+    target_size=(128, 128), 
+    batch_size=32, 
+    seed=42) 
+ 
+def combined_generator(image_gen, mask_gen): 
+    while True: 
+        image = next(image_gen) 
+        mask = next(mask_gen) 
+        yield image, mask 
+ 
+train_generator = combined_generator(image_generator, 
+mask_generator) 
+ 
+# Train the model 
+model.fit(train_generator, steps_per_epoch=200, epochs=50) 
+
+ 
+Output: 
+Model: "functional_23" 
+┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┓ 
+┃ Layer (type)        ┃ Output Shape      ┃    Param # ┃ Connected to      ┃ 
+┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━┩ 
+│ input_layer_13      │ (None, 128, 128,  │          0 │ -                 │ 
+│ (InputLayer)        │ 3)                │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ conv2d_125 (Conv2D) │ (None, 128, 128,  │      1,792 │ input_layer_13[0… │ 
+│                     │ 64)               │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ conv2d_126 (Conv2D) │ (None, 128, 128,  │     36,928 │ conv2d_125[0][0]  │ 
+│                     │ 64)               │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ max_pooling2d_25    │ (None, 64, 64,    │          0 │ conv2d_126[0][0]  │ 
+│ (MaxPooling2D)      │ 64)               │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ conv2d_127 (Conv2D) │ (None, 64, 64,    │     73,856 │ max_pooling2d_25… │ 
+│                     │ 128)              │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ conv2d_128 (Conv2D) │ (None, 64, 64,    │    147,584 │ conv2d_127[0][0]  │ 
+│                     │ 128)              │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ max_pooling2d_26    │ (None, 32, 32,    │          0 │ conv2d_128[0][0]  │ 
+│ (MaxPooling2D)      │ 128)              │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ conv2d_129 (Conv2D) │ (None, 32, 32,    │    295,168 │ max_pooling2d_26… │ 
+│                     │ 256)              │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ conv2d_130 (Conv2D) │ (None, 32, 32,    │    590,080 │ conv2d_129[0][0]  │ 
+│                     │ 256)              │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ max_pooling2d_27    │ (None, 16, 16,    │          0 │ conv2d_130[0][0]  │ 
+│ (MaxPooling2D)      │ 256)              │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ conv2d_131 (Conv2D) │ (None, 16, 16,    │  1,180,160 │ max_pooling2d_27… │ 
+│                     │ 512)              │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ conv2d_132 (Conv2D) │ (None, 16, 16,    │  2,359,808 │ conv2d_131[0][0]  │ 
+│                     │ 512)              │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ max_pooling2d_28    │ (None, 8, 8, 512) │          0 │ conv2d_132[0][0]  │ 
+│ (MaxPooling2D)      │                   │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ conv2d_133 (Conv2D) │ (None, 8, 8,      │  4,719,616 │ max_pooling2d_28… │ 
+│                     │ 1024)             │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ conv2d_134 (Conv2D) │ (None, 8, 8,      │  9,438,208 │ conv2d_133[0][0]  │ 
+│                     │ 1024)             │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ up_sampling2d_20    │ (None, 16, 16,    │          0 │ conv2d_134[0][0]  │ 
+│ (UpSampling2D)      │ 1024)             │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ conv2d_135 (Conv2D) │ (None, 16, 16,    │  2,097,664 │ up_sampling2d_20… │ 
+│                     │ 512)              │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ concatenate_20      │ (None, 16, 16,    │          0 │ conv2d_132[0][0], │ 
+│ (Concatenate)       │ 1024)             │            │ conv2d_135[0][0]  │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ conv2d_136 (Conv2D) │ (None, 16, 16,    │  4,719,104 │ concatenate_20[0… │ 
+│                     │ 512)              │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ conv2d_137 (Conv2D) │ (None, 16, 16,    │  2,359,808 │ conv2d_136[0][0]  │ 
+│                     │ 512)              │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ up_sampling2d_21    │ (None, 32, 32,    │          0 │ conv2d_137[0][0]  │ 
+│ (UpSampling2D)      │ 512)              │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ conv2d_138 (Conv2D) │ (None, 32, 32,    │    524,544 │ up_sampling2d_21… │ 
+│                     │ 256)              │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ concatenate_21      │ (None, 32, 32,    │          0 │ conv2d_130[0][0], │ 
+│ (Concatenate)       │ 512)              │            │ conv2d_138[0][0]  │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ conv2d_139 (Conv2D) │ (None, 32, 32,    │  1,179,904 │ concatenate_21[0… │ 
+│                     │ 256)              │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ conv2d_140 (Conv2D) │ (None, 32, 32,    │    590,080 │ conv2d_139[0][0]  │ 
+│                     │ 256)              │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ up_sampling2d_22    │ (None, 64, 64,    │          0 │ conv2d_140[0][0]  │ 
+│ (UpSampling2D)      │ 256)              │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ conv2d_141 (Conv2D) │ (None, 64, 64,    │    131,200 │ up_sampling2d_22… │ 
+│                     │ 128)              │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ concatenate_22      │ (None, 64, 64,    │          0 │ conv2d_128[0][0], │ 
+│ (Concatenate)       │ 256)              │            │ conv2d_141[0][0]  │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ conv2d_142 (Conv2D) │ (None, 64, 64,    │    295,040 │ concatenate_22[0… │ 
+│                     │ 128)              │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ conv2d_143 (Conv2D) │ (None, 64, 64,    │    147,584 │ conv2d_142[0][0]  │ 
+│                     │ 128)              │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ up_sampling2d_23    │ (None, 128, 128,  │          0 │ conv2d_143[0][0]  │ 
+│ (UpSampling2D)      │ 128)              │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ conv2d_144 (Conv2D) │ (None, 128, 128,  │     32,832 │ up_sampling2d_23… │ 
+│                     │ 64)               │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ concatenate_23      │ (None, 128, 128,  │          0 │ conv2d_126[0][0], │ 
+│ (Concatenate)       │ 128)              │            │ conv2d_144[0][0]  │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ conv2d_145 (Conv2D) │ (None, 128, 128,  │     73,792 │ concatenate_23[0… │ 
+│                     │ 64)               │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ conv2d_146 (Conv2D) │ (None, 128, 128,  │     36,928 │ conv2d_145[0][0]  │ 
+│                     │ 64)               │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ conv2d_147 (Conv2D) │ (None, 128, 128,  │      1,154 │ conv2d_146[0][0]  │ 
+│                     │ 2)                │            │                   │ 
+├─────────────────────┼───────────────────┼────────────┼───────────────────┤ 
+│ conv2d_148 (Conv2D) │ (None, 128, 128,  │          3 │ conv2d_147[0][0]  │ 
+│                     │ 1)                │            │                   │ 
+└─────────────────────┴───────────────────┴────────────┴───────────────────┘ 
+ Total params: 31,032,837 (118.38 MB) 
+ Trainable params: 31,032,837 (118.38 MB) 
+ Non-trainable params: 0 (0.00 B) 
+Found 1 images belonging to 2 classes. 
+Found 1 images belonging to 2 classes. 
+Epoch 45/50 
+200/200 ━━━━━━━━━━━━━━━━━━━━ 12s 60ms/step - accuracy: 
+0.0000e+00 - loss: 0.5111 
+Epoch 46/50 
+200/200 ━━━━━━━━━━━━━━━━━━━━ 12s 60ms/step - accuracy: 
+0.0000e+00 - loss: 0.5111 
+Epoch 47/50 
+200/200 ━━━━━━━━━━━━━━━━━━━━ 12s 60ms/step - accuracy: 
+0.0000e+00 - loss: 0.5110 
+Epoch 48/50 
+200/200 ━━━━━━━━━━━━━━━━━━━━ 12s 59ms/step - accuracy: 
+0.0000e+00 - loss: 0.5110 
+Epoch 49/50 
+200/200 ━━━━━━━━━━━━━━━━━━━━ 12s 60ms/step - accuracy: 
+0.0000e+00 - loss: 0.5110 
+Epoch 50/50 
+200/200 ━━━━━━━━━━━━━━━━━━━━ 12s 60ms/step - accuracy: 
+0.0000e+00 - loss: 0.5110

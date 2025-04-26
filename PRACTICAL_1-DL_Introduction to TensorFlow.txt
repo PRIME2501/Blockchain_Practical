@@ -1,0 +1,147 @@
+PRACTICAL 1:
+
+
+Practical 1: Introduction to TensorFlow  
+a. 
+•  Create tensors with different shapes and data types.  
+•  Perform basic operations like addition, subtraction, multiplication, and division on tensors.  
+•  Reshape, slice, and index tensors to extract specific elements or sections. 
+Performing matrix multiplication and finding eigenvectors and eigenvalues using TensorFlow 
+
+b.  
+Program to solve the XOR problem. 
+-------------------------------------------------------------------------------------------------------
+Practical 1: Introduction to TensorFlow 
+A) Performing matrix multiplication and finding eigenvectors and 
+eigenvalues using TensorFlow. 
+• Create tensors with different shapes and data types. 
+• Perform basic operations like addition, subtraction, multiplication, and division 
+on tensors. 
+• Reshape, slice, and index tensors to extract specific elements or sections. 
+ 
+Code: 
+
+import tensorflow as tf  
+# Step 1: Create tensors with different shapes and data types 
+tensor_float32 = tf.constant([[1.5, 2.5], [3.5, 4.5]], 
+dtype=tf.float32) 
+tensor_int32 = tf.constant([[1, 2], [3, 4]], dtype=tf.int32) 
+ 
+# Convert tensor_int32 to float32 to avoid type mismatch 
+tensor_int32 = tf.cast(tensor_int32, tf.float32) 
+ 
+# Step 2: Perform basic operations on tensors 
+tensor_add = tensor_float32 + tensor_int32 
+tensor_sub = tensor_float32 - tensor_int32 
+tensor_mul = tensor_float32 * tensor_int32 
+tensor_div = tensor_float32 / tensor_int32 
+ 
+# Step 3: Reshape, slice, and index tensors 
+reshaped_tensor = tf.reshape(tensor_float32, (1, 4)) 
+slice_tensor = tensor_float32[0, 1] 
+section_tensor = tensor_float32[:, 1] 
+ 
+# Step 4: Perform matrix multiplication 
+matrix_a = tf.constant([[1, 2], [3, 4]], dtype=tf.float32) 
+matrix_b = tf.constant([[5, 6], [7, 8]], dtype=tf.float32) 
+matrix_multiply = tf.matmul(matrix_a, matrix_b) 
+ 
+# Step 5: Find eigenvectors and eigenvalues 
+eigenvalues, eigenvectors = tf.linalg.eigh(matrix_a) 
+ 
+# Print results 
+print("Addition:\n", tensor_add.numpy()) 
+print("Subtraction:\n", tensor_sub.numpy()) 
+print("Multiplication:\n", tensor_mul.numpy()) 
+print("Division:\n", tensor_div.numpy()) 
+print("Reshaped tensor:\n", reshaped_tensor.numpy()) 
+print("Sliced tensor (element at [0, 1]):", slice_tensor.numpy()) 
+print("Extracted section (second column):", section_tensor.numpy()) 
+print("Matrix multiplication result:\n", matrix_multiply.numpy()) 
+print("Eigenvalues:\n", eigenvalues.numpy()) 
+print("Eigenvectors:\n", eigenvectors.numpy()) 
+Output: 
+Addition: 
+[[2.5 4.5] 
+[6.5 8.5]] 
+Subtraction: 
+[[0.5 0.5] 
+[0.5 0.5]] 
+Multiplication: 
+[[ 1.5  5. ] 
+[10.5 18. ]] 
+Division: 
+[[1.5       1.25     ] 
+[1.1666666 1.125    ]] 
+Reshaped tensor: 
+[[1.5 2.5 3.5 4.5]] 
+Sliced tensor (element at [0, 1]): 2.5 
+Extracted section (second column): [2.5 4.5] 
+Matrix multiplication result: 
+[[19. 22.] 
+[43. 50.]] 
+Eigenvalues: 
+[-0.8541019  5.854102 ] 
+Eigenvectors: 
+[[ 0.8506508  0.5257311] 
+[-0.5257311  0.8506508]] 
+
+
+B) Program to solve the XOR problem. 
+Code: 
+import tensorflow as tf 
+from tensorflow.keras.models import Sequential 
+from tensorflow.keras.layers import Dense 
+from tensorflow.keras import Input 
+import numpy as np 
+ 
+# Step 1: Prepare the XOR dataset 
+# Input data (X) 
+X = np.array([[0, 0], 
+              [0, 1], 
+              [1, 0], 
+              [1, 1]]) 
+ 
+# Output data (Y) for XOR 
+Y = np.array([[0], [1], [1], [0]]) 
+ 
+# Step 2: Define the neural network model 
+model = Sequential() 
+ 
+# Add input layer (2 input nodes) and first hidden layer with 4 
+neurons and ReLU activation 
+model.add(Input(shape=(2,))) 
+model.add(Dense(4, activation='relu')) 
+ 
+# Add output layer with 1 neuron and sigmoid activation function 
+(for binary output) 
+model.add(Dense(1, activation='sigmoid')) 
+ 
+# Step 3: Compile the model 
+model.compile(loss='binary_crossentropy', optimizer='adam', 
+metrics=['accuracy']) 
+ 
+# Step 4: Train the model 
+model.fit(X, Y, epochs=10000, verbose=0) 
+ 
+# Step 5: Evaluate the model 
+loss, accuracy = model.evaluate(X, Y) 
+print(f'Accuracy: {accuracy*100:.2f}%') 
+ 
+# Step 6: Make predictions 
+predictions = model.predict(X) 
+print("\nPredictions on XOR data:") 
+for i in range(len(X)): 
+    print(f"Input: {X[i]} - Predicted Output: 
+{predictions[i][0]:.4f}, Actual Output: {Y[i][0]}") 
+
+
+Output: 
+1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 298ms/step - accuracy: 1.0000 - loss: 6.0945e-04 
+Accuracy: 100.00% 
+1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 146ms/step 
+Predictions on XOR data: 
+Input: [0 0] - Predicted Output: 0.0020, Actual Output: 0 
+Input: [0 1] - Predicted Output: 0.9998, Actual Output: 1 
+Input: [1 0] - Predicted Output: 0.9998, Actual Output: 1 
+Input: [1 1] - Predicted Output: 0.0002, Actual Output: 0 
