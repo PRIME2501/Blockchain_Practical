@@ -1,0 +1,109 @@
+Robotic Process Automation Practical:
+
+Practical 1 :
+RPA Basics: Sequences and Flowcharts: 
+a. Create a simple sequence-based project. 
+b. Create a flowchart-based project. 
+c. Automate UiPath Number Calculation (Subtraction, Multiplication, Division of numbers).  
+d Create an automation UiPath project using different types of variables (number, datetime, Boolean, generic, array, data table) 
+
+Practical 2 :
+Decision making and looping1:
+a. Consider an array of names. We have to find out how many of them start with the letter "a". Create an automation where the number of names starting with "a" is counted and the result is displayed. 
+b. Demonstrate switch statement with an example. 
+c. Create an automation To Print numbers from 1 to 10 with break after the write line activity inside for each activity 
+d. Create an automation using Do. While Activity to print numbers from 5 to 1 
+e. Create an automation using Delay Activity between two write line activities to separate their execution by 5 seconds 
+Create an automation to demonstrate use of decision statements (if) 
+
+Practical 3 :
+Types of Recording: 
+a. Basic Recording using Toolbar 
+b. Basic Recording using Notepad 
+c. Desktop Recording using Tool bar 
+d. Desktop Recording by creating a workflow 
+e. Web Recording e.g. Find the rating of the movie from imdb web site Web Recording manually 
+  
+Practical 4 :
+4a. Excel Automation: 
+a. Automate the process to extract data from an excel file into a data table and vice versa 
+b. Create an automation to Write data to specific cell of an excel sheet. 
+c. Create an automation to Read data to specific cell of an excel sheet. 
+d. Create an automation to append data to specific cell of an excel sheet. 
+e. Create an automation to sort a table of an excel sheet. 
+f. Create an automation to filter a table of an excel sheet 
+Choose a repetitive manual task from your workplace or daily life. 
+Design and implement an RPA bot to automate this task using your preferred RPA tool 
+
+4b. Different controls in UiPath: 
+a. Implement the attach window activity. 
+b. Automate using Anchor Base. 
+c. Automate using Element Exists. 
+d. Automate using Find Children control. 
+e. Use Get Ancestor control 
+Use Find Relative control 
+
+Practical 5:
+Keyboard and Mouse Events: 
+a. Demonstrate the following activities in UiPath: 
+i.Mouse (click, double click and hover) 
+ii.Type into 
+iii.Type Secure text 
+b. Demonstrate the following events in UiPath: 
+ .Element triggering event 
+i.Image triggering event 
+ii.System Triggering Event 
+i. Automate the process of launching an assistant bot on a keyboard event. 
+
+Practical 6:
+Screen Scraping and Web Scraping methods: 
+a. Automate the following screen scraping methods using UiPath:  
+a. Full Text 
+b. Native 
+c. OCR 
+b. Demonstrate Data Scraping and display values in Message box. 
+Demonstrate Screen Scraping for a pdf, web page and image file. 
+
+Practical 7:
+A. PDF Automation and Exception Handling: 
+a. Read PDF With OCR 
+b. Merge PDF’s into one 
+c. Get PDF Total Page count Using Regex 
+d. Extract data from a PDF or Excel file and populate it into a database 
+or spreadsheet. 
+e. Extract data from a PDF or Excel file and populate it into a database 
+or spreadsheet. Implement data manipulation techniques like filtering, 
+sorting, or data validation. 
+Demonstrate Exception Handling using UiPath 
+
+B.Email Automation: 
+a. Configure Email using UiPath 
+b. Read Emails 
+c. Send Email with Attachment 
+d. Save Email Attachments 
+Reply to Email 
+
+Practical 8:
+A. Orchestrator management and mini project: 
+a. Deploy bots to Orchestrator 
+b. Run jobs from Orchestrator 
+c. Queue Introduction: 
+i.Add items to Queue. 
+ii.Get Queue item from Orchestrator 
+Build UiPath Chatbot using Google dialogflow 
+
+B. RPA Applications: 
+a. Automate the extraction of data from invoices, validate information, and update accounting systems. 
+b. Automate data entry tasks from various sources such as emails, forms, or documents, and validate data against predefined rules. 
+c. Automate the process of expense reporting by extracting data from receipts, categorizing expenses, and generating reports. 
+d. Automate inventory tracking and management processes, including stock updates, reordering, and inventory audits. 
+Automate sales order processing tasks such as order entry, validation, and fulfilment. 
+
+Practical 9:
+Prepare the Robotics process automation project on any one of the following domains: 
+RPA in Logistics, Intelligent Process Automation, IT Process Automation 
+Explained, RPA in Banking, RPA in Education, RPA in 
+Telecommunications, RPA in Healthcare, RPA in Insurance, RPA in 
+Accounting, RPA Challenges, RPA in Real Estate, RPA in BPO, RPA 
+Security
+
