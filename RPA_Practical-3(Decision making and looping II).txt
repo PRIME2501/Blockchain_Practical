@@ -1,0 +1,118 @@
+RPA Practical:
+
+Practical 3 :
+3  Decision making and looping II: 
+a. Create an automation using Do. While Activity to print numbers from 5 to 1 
+b. Create an automation using Delay Activity between two Write Line activities to separate their execution by 5 seconds 
+c. Create an automation to demonstrate use of decision statements (if) 
+
+
+Steps:
+2a. Consider an array of names. We have to find out how many of them start with the letter "a". 
+Create an automation where the number of names starting with "a" is counted and the result is displayed. 
+Step-1: click on Process 
+Step-2: Give name to the practical and click on create 
+Step-3: create a sequence by using activity search column 
+Step-4: select assign option from search activities option 
+Step-5: set variables and give random names in value to save option in assign box 
+Step-6: select for each option from search activities 
+Step-7: The further steps are as follows: 
+a) define names value in variables in for each current text. 
+b) Set an assign box inside body of an for each current text.  
+[value to save-currentText.Substring(0, 1)] 
+c) Set an If condition on condition* [firstletter.ToLower.Equals("a")]. 
+d) Follow the image for further commands and reference. 
+Step-8: Click on debug file and run the sequence 
+
+2b. Demonstrate switch statement with an example. 
+Step-1: click on Process 
+Step-2: Give name to the practical and click on create 
+Step-3: The sequence model are as follows: 
+a) Make an sequence box by using search activities 
+b) Then make an input dialog box  
+c) Then give five switch statement in switch option provided by search activities 
+d) Set variable value as number 
+e) Follow the image for sequence model 
+Click on debug file and run the sequence. 
+ 
+2c. Create an automation To Print numbers from 1 to 10 with break after the writeline 
+activity inside for each activity 
+Step-1: click on Process 
+Step-2: Give name to the practical and click on create 
+Step-3: select the options as follows: 
+a) First select the sequence option. 
+b) Then select the do while option from search activities  
+c) Select the write line option and drag in side the body option 
+d) Connect the assign box  to the write line  
+e) Define the variable Int  
+f) Give condition as Int<11 
+Step-4: click on debug file option and get the output 
+
+2d. Create an automation using Do..While Activity to print numbers from 5 to 1 
+Input: 
+Output: 
+
+2e. Create an automation using Delay Activity between two writeline activities to separate their 
+execution by 5 seconds 
+Input: 
+Output: Before and After 10 seconds 
+
+2f. Create an automation to demonstrate use of decision statements (if) 
+
+
+ChatGPT Solution:
+
+Practical 3 – Decision Making and Looping II
+
+
+a. Automation using Do While to Print Numbers from 5 to 1
+
+**Objective:** Use a **Do While** loop to print numbers in descending order.
+
+Steps:
+1. Create a **new Sequence**.
+2. Add an **Assign** activity:  
+   ```vb
+   num = 5
+   ```
+   *(Variable: `num` – Integer)*
+3. Add a **Do While** activity:
+   - Condition: `num >= 1`
+4. Inside the **Do While**:
+   - Add **Write Line**: `num.ToString`
+   - Add **Assign**: `num = num - 1`
+
+
+b. Automation using Delay Activity Between Two Write Line Activities
+
+**Objective:** Demonstrate how to pause execution using the **Delay** activity.
+
+Steps:
+1. Create a **new Sequence**.
+2. Add a **Write Line**: `"First message printed"`
+3. Add a **Delay** activity:
+   - Duration: `00:00:05` (5 seconds)
+4. Add another **Write Line**: `"Second message printed after delay"`
+
+
+c. Automation to Demonstrate Use of Decision Statements (If)
+
+**Objective:** Use the **If** activity to make a decision based on a condition.
+
+**Example:** Check if a number is positive, negative, or zero.
+
+Steps:
+1. Create a **new Sequence**.
+2. Add an **Assign**:  
+   ```vb
+   number = -3
+   ```
+   *(Variable: `number` – Integer)*
+3. Add an **If** activity:
+   - Condition: `number > 0`
+   - Then: **Message Box**: "Number is positive"
+   - Else: Add another **If** (nested):
+     - Condition: `number < 0`
+     - Then: Message Box: "Number is negative"
+     - Else: Message Box: "Number is zero"
+

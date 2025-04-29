@@ -1,0 +1,90 @@
+RPA Practical:
+
+Practical 9:
+9 Email Automation: 
+a. Configure Email using UiPath  
+b. Read Emails  
+c. Send Email with Attachment  
+d. Save Email Attachments Reply to Email 
+
+ChatGPTSolution:
+
+Steps:
+
+RPA Practical 9: Email Automation using UiPath**, including how to configure, read, send, reply, and handle attachments in emails.
+
+Practical 9 – Email Automation in UiPath
+
+UiPath.Mail.Activities** package is installed. Use **Outlook**, **Gmail**, or **SMTP/IMAP** depending on your email provider.
+
+
+a. Configure Email in UiPath**
+
+Using Outlook:**
+1. Make sure Outlook is installed and configured.
+2. Use **Get Outlook Mail Messages** / **Send Outlook Mail Message**.
+3. No extra config is needed if Outlook is the default profile.
+
+Using Gmail (IMAP/SMTP):**
+1. Enable IMAP and "Allow Less Secure Apps" in Gmail (or use App Passwords if 2FA is on).
+2. For **Read**:
+   - Use **Get IMAP Mail Messages**
+   - IMAP Server: `imap.gmail.com`, Port: `993`
+3. For **Send**:
+   - Use **Send SMTP Mail Message**
+   - SMTP Server: `smtp.gmail.com`, Port: `587`
+
+b. Read Emails**
+
+Steps (Outlook or IMAP):**
+1. Use **Get Outlook Mail Messages** (or **Get IMAP Mail Messages**)
+   - Set `Top = 5` to limit results.
+2. Loop with **For Each**:
+   - TypeArgument: `System.Net.Mail.MailMessage`
+   - Use `item.Subject`, `item.From`, `item.Body`
+
+Example:**
+```vb
+Message Box: "Subject: " + item.Subject
+```
+
+c. Send Email with Attachment**
+
+Using Outlook / SMTP:**
+1. Use **Send Outlook Mail Message** or **Send SMTP Mail Message**
+2. Set:
+   - To: `"someone@example.com"`
+   - Subject: `"Test Email"`
+   - Body: `"This is a test with attachment"`
+   - **AttachmentsCollection** → Add full file path(s)
+
+```vb
+Attachments = { "C:\Users\abc\Documents\file.pdf" }
+```
+
+d. Save Email Attachments**
+
+Steps:**
+1. Use **Get Mail Messages** to retrieve emails
+2. Inside **For Each** loop:
+   - Use **Save Attachments** activity
+   - Input: `item`
+   - FolderPath: `"C:\SavedAttachments\"`
+
+
+e. Reply to Email**
+
+Steps:**
+1. Inside **For Each MailMessage**:
+2. Use **Reply To Outlook Mail Message**
+   - Input: `item`
+   - Body: `"Thank you for your email!"`
+
+Alternatively, use **Send Mail Message** with `item.From.Address` to manually reply.
+
+Sample Output in Message Boxes:
+```plaintext
+Subject: Invoice Due
+Body: Please pay by 30th April
+Attachment saved to: C:\SavedAttachments\
+```

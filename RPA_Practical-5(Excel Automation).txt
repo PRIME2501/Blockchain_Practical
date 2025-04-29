@@ -1,0 +1,164 @@
+RPA Practical:
+
+Practical 5:
+5 Excel Automation: 
+a. Automate the process to extract data from an excel file into a data table and vice versa 
+b. Create an automation to Write data to specific cell of an excel sheet. 
+c. Create an automation to Read data to specific cell of an excel sheet.  
+d. Create an automation to append data to specific cell of an excel sheet. 
+e. Create an automation to sort a table of an excel sheet.  
+f. Create an automation to filter a table of an excel sheet 
+Choose a repetitive manual task from your workplace or daily life. Design and implement an RPA bot to automate this task using your preferred RPA tool   
+
+
+Steps:
+A. Automate the process to extract data from an excel file into a data table and vice versa.  
+1) Excel file to Data Table  
+a) Create New Blank Process and name it.  
+b) Go to rpachallenge.com and download the challenge excel file and place it in the same folder as the main folder.  
+c) Create a New Sequence and name it.  
+d) Add Read Range Workbook Activity to the sequence.  
+e) Select challenge.xlsx.  
+f) Configure the Activity  
+g) Add Use Application/Browser activity and configure it.  
+h) Add For Each Row in Data Table in the Use Application/Browser activity body.  
+i) Add Click and Type Into activities for all the buttons and Text Field Boxes respectively.  
+j) Run File to start Automation and get the final score.  
+
+2) Data Table to Excel File  
+a) Create New Sequence and name it.  
+b) Add Excel Process Scope, Build Data Table, Use Excel File and Write DataTable to Excel to the sequence and configure it.  
+c) Create Data Table and set variable.  
+d) Set the variable in what to write and press run file to run.  
+
+B. Create an automation to Write data to specific cell of an excel sheet.  
+a) Create a new Sequence and name it.  
+b) Add Assign activity, create a variable for array of int32.  
+c) Add For Each and Write Cell Workbook activity and configure it.  
+d) Fill all the fields of Write Cell Workbook and use Expression Editor to auto increment rows.  
+e) Run File and check output.  
+
+C. Create an automation to Read data to specific cell of an excel sheet.  
+a) Create a new sequence and name it.  
+b) Add Excel Process Scope, Use Excel File and Read Range activities in sequence.  
+c) Configure these activities. 
+d) Add Output Data Table as Text and Message box activities and configure them.  
+e) Run File and get the output.  
+D. Create an automation to append data to specific cell of an excel sheet.   
+a) Create a new sequence and name it.  
+b) Add Excel Process Scope,  Use Excel File and Read Range activities in the sequence.  
+c) Add Use Excel File and Write DataTable to Excel activities in the sequence.  
+d) Configure all these activities.  
+e) Run File twice to see the final output.  
+  
+E. Create an automation to sort a table of an excel sheet.  
+a) Create new sequence and name it.  
+b) Add Excel Process Scope, Use Excel File and Read Range activities to the sequence.  
+c) Add Sort Data Table and Write Data Table to Excel activities to the sequence.  
+d) Configure these activities.  
+e) Run File and see output.  
+
+F. Create an automation to filter a table of an excel sheet.  
+a) Create a new sequence and name it.  
+b) Add Excel Process Scope, Use Excel File and Read Range activities to the sequence.  
+c) Add Filter Data Table and 
+e) Run File and view the output.  
+
+
+ChatGPT Solution:
+
+RPA Practical 5: Excel Automation in UiPath, with explanations and steps for each task. These exercises use UiPath Excel Activities, which require Excel installed and preferably the Excel package imported (`UiPath.Excel.Activities`).
+
+
+Practical 5 – Excel Automation in UiPath**
+
+a. Extract Data from Excel to DataTable and Vice Versa**
+
+Objective:** Read Excel into a DataTable and write it to another Excel file.
+
+Steps:**
+1. Use **Excel Application Scope** → Point to `data.xlsx`
+2. Inside it, use **Read Range**:
+   - Sheet: `"Sheet1"`
+   - Output → `dtData` (DataTable)
+3. Use another **Excel Application Scope** for `output.xlsx`
+4. Use **Write Range**:
+   - Input: `dtData`
+   - Sheet: `"Sheet1"`
+   - Start Cell: `"A1"`
+
+b. Write Data to a Specific Cell**
+
+Objective:** Write text or numbers to a given cell.
+
+Steps:**
+1. Excel Application Scope → `data.xlsx`
+2. Inside it, use **Write Cell**:
+   - SheetName: `"Sheet1"`
+   - Cell: `"B2"`
+   - Value: `"Hello UiPath"`
+
+c. Read Data from a Specific Cell**
+
+Objective:** Read a single cell’s value.
+
+Steps:**
+1. Excel Application Scope → `data.xlsx`
+2. Use **Read Cell**:
+   - Sheet: `"Sheet1"`
+   - Cell: `"B2"`
+   - Output → `cellValue` (String)
+3. Display using **Message Box**.
+
+d. Append Data to a Specific Cell**
+
+Objective:** Add content to an existing cell’s value.
+
+Steps:**
+1. Use **Read Cell** to get original value.
+2. Add **Assign**:
+   ```vb
+   newValue = originalValue + " - Appended Text"
+   ```
+3. Use **Write Cell** to write `newValue` back to the same cell.
+
+e. Sort Table of Excel Sheet**
+
+Objective:** Sort Excel data by a column (e.g., Sort by “Name” column).
+
+Steps:**
+1. Use **Read Range** to read data into `dtData`.
+2. Use **Assign** with:
+   ```vb
+   dtSorted = dtData.AsEnumerable().OrderBy(Function(row) row("Name").ToString).CopyToDataTable()
+   ```
+3. Use **Write Range** to write `dtSorted` back.
+
+f. Filter Table of Excel Sheet**
+
+Objective:** Filter rows based on condition (e.g., Age > 25).
+
+Steps:**
+1. Read Range → `dtOriginal`
+2. Use **Assign**:
+   ```vb
+   dtFiltered = dtOriginal.Select("Age > 25").CopyToDataTable()
+   ```
+3. Write Range → New sheet or file.
+
+g. Automate a Repetitive Manual Task (Custom Mini Project)**
+
+Example Task:** Daily Attendance Logging
+
+Manual Task:**
+- Open Excel file daily
+- Add current date & "Present" under your name
+
+Automated Version:**
+1. Use **Now** to get today's date → `today = Now.ToString("dd-MM-yyyy")`
+2. Open **Excel Application Scope** → `attendance.xlsx`
+3. Use **Find Last Row** or a fixed cell → Write date in column A
+4. In Column B → Write `"Present"`
+
+This saves time and ensures consistency in your daily check-in.
+

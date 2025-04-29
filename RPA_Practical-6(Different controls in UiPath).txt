@@ -1,0 +1,142 @@
+RPA Practical:
+
+Practical 6:
+6 Different controls in UiPath: 
+a. Implement the attach window activity.  
+b. Automate using Anchor Base.  
+c. Automate using Element Exists. 
+d. Automate using Find Children control.  
+e. Use Get Ancestor control  
+f. Use Find Relative control  
+
+Steps:
+Different controls in UiPath: 
+6a. Implement the attach window activity.(attach window is now replace with use 
+Application/Browser) 
+Step-1: click on Process 
+Step-2: Give name to the practical and click on create 
+Step-3: To create an use Application/Browser activity perform the steps as follows 
+a) First make an flow chart 
+b) Then make an sequence box 
+c) Inside sequence box make an use application/Browser activity  
+d) Then click on indicate application to automate (click on blank notepad) 
+e) There is an Do option in the use application/browser activity, drag an untitled notepad 
+f) Write the content in type this option (“Automating through uipath”) 
+g) Click on debug file then the notepad will be open by automation and the text will be written by automation as Automating through uipath. 
+
+6b. Automate using Anchor Base. (Anchor base is updated in advance from as  use Application/Browser) 
+Input: follow same steps as practical 5a and add find element option for finding the search address in web browser example 
+Output: we are getting an output of automation typing in browser and searching the search option in chrome by find element option 
+
+6c. Automate using Element Exists. (Element exists activity is been updated by check app state) 
+Step-1: use the website https://rpachallenge.com/ for automation 
+Step-2: click on Process 
+Step-3: Give name to the practical and click on create 
+Step-4: follow the image for giving the sequence and functionality to check app state automation. 
+Step-6: click on debug file and see the use application/browser and check app state automation. 
+a) First it goes to start > Round1 
+b) It types the address as Mulund college of commerce 
+c) Then click on submit button 
+d) If target does not appears it shows the same loop of point a) to c). 
+Step-7: see the work flow of automation step by step in image 
+
+6d. Automate using Find Children control. 
+Step-1: use website” https://acme-test.uipath.com/vendors/inventory/” 
+Step-2: 
+Step-3: Blanks are inventory code which are not displayed because of security reasons. 
+5e. Use Get Ancestor control 
+Step-1: 
+Step-2: 
+Step-3: Debug file 
+
+6f. Use Find Relative control 
+Step-1: 
+Step-2: 
+Step-3: 
+
+
+ChatGPT Solution:
+
+RPA Practical 6: Working with Different Controls in UiPath, covering each activity with simple examples and explanations.
+
+Practical 6 – Different Controls in UiPath
+
+a. Implement the Attach Window Activity**
+
+Objective:** Work within a specific window (e.g., Notepad, Calculator) to scope activities.
+
+Example: Automate text entry in Notepad**
+
+Steps:**
+1. Open Notepad manually.
+2. In UiPath, drag **Attach Window** activity.
+3. Indicate the Notepad window.
+4. Inside it, add a **Type Into** activity:
+   ```vb
+   "This is typed inside the attached Notepad window"
+   ```
+
+
+b. Automate Using Anchor Base**
+
+Objective:** Use an anchor element to locate dynamic or shifting UI elements.
+
+Example: Fill username field where label location may vary**
+
+Steps:**
+1. Drag **Anchor Base** activity.
+2. In **Anchor** section → Add **Find Element** (e.g., label "Username")
+3. In **Action** section → Add **Type Into** (target input field)
+   - Text: `"JohnDoe"`
+
+Useful when labels are fixed but input fields are variable.**
+
+
+c. Automate Using Element Exists**
+
+Objective:** Detect if an element is present (returns Boolean).
+
+Example: Check if a pop-up window appears**
+
+Steps:**
+1. Use **Element Exists**
+2. Indicate the pop-up (e.g., Save dialog)
+3. Output → `exists` (Boolean)
+4. Add an **If** activity:
+   - Condition: `exists = True`
+   - Then: Add a Message Box: `"Pop-up exists"`
+
+
+d. Automate Using Find Children Control**
+
+Objective:** Get a list of UI elements within a parent (e.g., list items in a menu).
+
+Steps:**
+1. Use **Find Children** → Indicate parent element (like a list box or menu)
+2. Output → `children` (IEnumerable<UiElement>)
+3. Use **For Each** loop:
+   - TypeArgument: `UiElement`
+   - Action: Use **Get Attribute** or **Get Text** to extract item details
+
+
+e. Use Get Ancestor Control**
+
+Objective:** Get the parent or ancestor of a UI element.
+
+Example:** Click the panel or section that contains a label.
+
+Steps:**
+1. Use **Find Element** to get a specific label.
+2. Use **Get Ancestor** → Pass the element as input
+3. Output: ancestor UiElement (e.g., surrounding panel)
+4. Optionally perform actions like highlighting or clicking ancestor.
+
+
+f. Use Find Relative Control**
+
+Objective:** Identify an element in relation to another (e.g., text box next to a label).
+
+Steps:**
+1. Use **Find Element** → Identify the reference (e.g., label "Email")
+2. Use **Find Relative Element** → Find the textbox next to it
+3. Use **Type Into** to enter email address.

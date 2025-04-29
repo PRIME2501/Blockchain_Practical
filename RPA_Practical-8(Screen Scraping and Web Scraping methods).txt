@@ -1,0 +1,110 @@
+RPA Practical:
+
+Practical 8:
+8 Screen Scraping and Web Scraping methods: 
+a. Automate the following screen scraping methods using UiPath:  
+a. Full Text 
+b. Native  
+c. OCR  
+b. Demonstrate Data Scraping and display values in Message box. 
+Demonstrate Screen Scraping for a pdf, web page and image file. 
+
+Steps:
+8a. Automate the following screen scraping methods using UiPath: 
+a. Full Text and Native (Replaced by get text) 
+Step-1: use browser/application and indicate to notepad 
+Step-2: get text from search activities and indicate to file option, click on highlighted part and click on preview extraction
+Step-3: set on full text 
+
+b. OCR (replaced by get OCR text) 
+Step-1: 
+Step-2: 
+
+8b. Demonstrate Data Scraping and display values in Message box. Demonstrate Screen Scraping for a pdf, web page and image file. 
+Step-1: 
+Step-2: 
+Step-3: 
+
+8c. Demonstrate Screen Scraping (use application/browser) for a pdf. 
+Step1: open a sample pdf in adobe reader. 
+Step2: set variable 
+Step3: output 
+
+ChatGPT Solution:
+
+RPA Practical 8: Screen Scraping and Web Scraping in UiPath**, including methods like **Full Text, Native, OCR**, **Data Scraping**, and scraping from PDFs, web pages, and images.
+
+Practical 8 – Screen Scraping and Web Scraping
+
+a. Automate Screen Scraping Methods**
+
+UiPath provides three main **screen scraping** methods via the **Screen Scraping Wizard**:
+
+i. Full Text Scraping**
+- **Method:** Fastest and most reliable.
+- **Use case:** Static UI elements like Notepad or website text.
+- **Steps:**
+  1. Open Notepad with text.
+  2. In UiPath, go to **Screen Scraping Wizard**.
+  3. Select **Full Text** method and capture Notepad.
+  4. Output result to a **String variable**.
+  5. Use **Message Box** to show text.
+
+ii. Native Scraping**
+- **Method:** Gets text along with formatting and hidden elements.
+- **Use case:** Windows apps, Excel, Visual Studio.
+- **Steps:**
+  1. Open any application with text.
+  2. Use **Screen Scraping** → **Native** method.
+  3. Output text → show using **Message Box**.
+
+iii. OCR Scraping**
+- **Method:** Uses image recognition (good for images/PDFs).
+- **Use case:** Non-selectable text in images, Citrix, PDFs.
+- **Steps:**
+  1. Use **Screen Scraping Wizard** → **OCR Method**.
+  2. Choose an OCR engine (Tesseract, Google, Microsoft).
+  3. Select the image or scanned PDF.
+  4. Show output using **Message Box**.
+
+b. Demonstrate Data Scraping from Website**
+
+Objective:** Extract structured data like table/list from a website.
+
+Example: Extract movie titles and ratings from IMDb**
+
+Steps:
+1. Open UiPath → Click **Data Scraping** wizard.
+2. Navigate to IMDb: `https://www.imdb.com/chart/top`
+3. Click first movie title → Click second movie to define pattern.
+4. Extract fields like Movie Name, Year, Rating.
+5. Store output in a DataTable.
+6. Use **For Each Row** + **Message Box** to show values:
+   ```vb
+   row("Movie").ToString + " - " + row("Rating").ToString
+   ```
+
+c. Demonstrate Screen Scraping from PDF, Web Page, and Image**
+
+i. PDF Scraping**
+1. Use **Read PDF Text** (for selectable text PDFs).
+2. For scanned PDFs, use **Read PDF with OCR**.
+3. Output text to variable → Use **Message Box**.
+
+ii. Web Page Scraping**
+1. Open any web page (e.g., Wikipedia or IMDb).
+2. Use **Screen Scraping Wizard** → Full Text / Native.
+3. Extract headline or paragraph → display via **Message Box**.
+
+iii. Image File Scraping**
+1. Load an image file with text (e.g., JPG or PNG).
+2. Use **Read Image with OCR** or **Screen Scraping Wizard** → OCR.
+3. Show extracted text in **Message Box**.
+
+Example Output
+
+```plaintext
+"The OCR result is: Invoice #12345 - Total: $567.00"
+"Data Scraped: The Shawshank Redemption - 9.3"
+```
+

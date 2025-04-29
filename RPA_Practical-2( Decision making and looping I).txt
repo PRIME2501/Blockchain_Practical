@@ -1,0 +1,85 @@
+RPA Practical:
+
+Practical 2 :
+2  Decision making and looping I: 
+a. Consider an array of names. We have to find out how many of them start with the letter "a". Create an automation where the number of names starting with "a" is counted and the result is displayed. 
+b. Demonstrate switch statement with an example. 
+c. Create an automation To Print numbers from 1 to 10 with break after the WriteLine activity inside for each activity. 
+
+Steps:
+1d. Create an automation UiPath project using different types of variables (number, 
+datetime, Boolean, generic, array, data table) 
+Step-1: click on Process 
+Step-2: Give name to the practical and click on create 
+Step-3: 
+Step-4:  
+Step-5: debug file 
+
+
+ChatGPT Solution:
+
+Practical 2 – Decision Making and Looping I
+
+
+a. Count Names Starting with the Letter "a"
+
+**Objective:** Use a loop and decision logic to count how many names start with "a".
+
+**Steps:**
+1. Create a **new Sequence**.
+2. Add an **Assign** activity:
+   ```vb
+   namesArray = {"alice", "bob", "Andrew", "amy", "john", "Alex"}
+   ```
+3. Add a variable `count = 0` (Integer).
+4. Add a **For Each** activity:
+   - TypeArgument = `String`
+   - ForEach item in `namesArray`
+   - Inside loop:
+     - Add **If** condition:
+       ```vb
+       item.ToLower.StartsWith("a")
+       ```
+     - If True → Assign: `count = count + 1`
+5. After the loop, add a **Message Box**:
+   ```vb
+   "Names starting with 'a': " + count.ToString
+   ```
+
+
+b. Demonstrate Switch Statement with Example
+
+**Objective:** Use the **Switch** activity to execute different actions based on a value.
+
+**Example:** Input a day of the week, output whether it's a weekday or weekend.
+
+**Steps:**
+1. Add an **Input Dialog** to get `dayInput` (String).
+2. Add a **Switch** activity:
+   - Expression: `dayInput.ToLower`
+   - TypeArgument: `String`
+3. Add cases like:
+   - `"monday"`, `"tuesday"`, `"wednesday"`, etc. → Message Box: "It's a weekday"
+   - `"saturday"`, `"sunday"` → Message Box: "It's a weekend"
+4. Add **Default**: Message Box: "Invalid input"
+
+
+c. Print Numbers 1 to 10 with Break After WriteLine
+
+**Objective:** Loop through numbers 1–10 and break after writing one number.
+
+**Steps:**
+1. Create a **new Sequence**.
+2. Add an **Assign** activity:
+   ```vb
+   numbers = Enumerable.Range(1, 10).ToArray()
+   ```
+3. Add a **For Each** activity:
+   - TypeArgument = `Int32`
+   - ForEach item in `numbers`
+   - Inside loop:
+     - Add **Write Line**: `item.ToString`
+     - Add **Break** activity (this will exit after the first item)
+
+Note: `Break` activity only works inside **For Each** or **While** loops.
+

@@ -1,0 +1,107 @@
+RPA Practical:
+
+Practical 7:
+7 Keyboard and Mouse Events:  
+a.  Demonstrate the following activities in UiPath: 
+i.Mouse (click, double click and hover)  
+ii.Type into  
+iii.Type Secure text  
+b. Demonstrate the following events in UiPath:  
+ i.Element triggering event  
+ ii. Image triggering event 
+ iii.System Triggering Event 
+c. Automate the process of launching an assistant bot on a keyboard event. 
+
+
+Steps:
+A. Screen Scraping and Web Scraping methods.  
+a) Create new process and name it.  
+b) Create a new sequence and name it.  
+c) Install UI Automation package in UI Path.  
+d) Add Use Application/Browser activity and configure it to open amazon.in  
+e) Add Type Into activity to search for iPhone into search bar.  
+f) Start Table Extraction to automate data Scraping.  
+g) Just Like Name configure other information that is to be collected.  
+h) Add Single Excel Process Scope, Use Excel File and Write Data Table to Excel and configure it to save the data table to excel file.  
+i) Remove verification for Type Into as the automation crashes.  
+j) View the output in excel file  
+
+ChatGPT Solution:
+
+RPA Practical 7: Keyboard and Mouse Events in UiPath, covering all required activities and events, along with a simple automation example to launch a bot via a keyboard trigger.
+
+Practical 7 – Keyboard and Mouse Events in UiPath
+
+a. Demonstrate Mouse and Keyboard Activities**
+
+i. Mouse Events (Click, Double Click, Hover)**
+
+1. **Click**:
+   - Use the **Click** activity.
+   - Indicate a button or UI element (e.g., Start Menu icon or browser tab).
+
+2. **Double Click**:
+   - Use **Double Click** activity.
+   - Indicate a file or folder.
+
+3. **Hover**:
+   - Use **Hover** activity.
+   - Indicate a menu item to simulate mouse hover (useful for dropdowns).
+
+ii. Type Into**
+
+- Use **Type Into** activity.
+- Example: Open Notepad and type:
+  ```vb
+  "This is a 'Type Into' demo"
+  ```
+
+iii. Type Secure Text**
+
+- Use **Get Secure Credential** (from Windows Credential Manager or Asset).
+- Use **Type Secure Text** activity.
+- Input: the secure string (e.g., for password fields in login forms).
+
+
+b. Demonstrate Triggering Events**
+
+i. Element Triggering Event**
+
+- Use **Monitor Events** → **Element Trigger**
+- Example:
+  1. Use **Element Trigger** to watch for a pop-up or new window.
+  2. Add a handler (e.g., click “OK” or log event).
+
+ii. Image Triggering Event**
+
+- Use **Image Trigger** inside **Monitor Events**
+- Example:
+  1. Indicate a logo or warning icon.
+  2. When the image appears, show a **Message Box**.
+
+iii. System Triggering Event**
+
+- Use **System Trigger** activity (from **UiPath.System.Activities** package)
+- Supported events: keyboard hotkey, mouse click, or file change
+- Example:
+  - Trigger bot when `Ctrl + Shift + L` is pressed.
+
+
+c. Automate Launching Assistant Bot on Keyboard Event**
+
+Objective:** Launch a bot when a specific key is pressed (e.g., `Ctrl + Alt + R`)
+
+Steps:**
+1. Create a **Trigger Scope** activity.
+2. Inside it, use **Key Press Trigger**:
+   - Hotkey: `Ctrl + Alt + R`
+3. Inside the trigger, perform desired actions:
+   - **Open Notepad**, **Type Into**, or **Show Message Box**.
+
+Example Actions in Trigger:**
+- Start Process: `"notepad.exe"`
+- Type Into: `"Assistant Bot triggered by keyboard!"`
+
+
+These features are especially useful for attended bots or assistant bots that react to system events.
+

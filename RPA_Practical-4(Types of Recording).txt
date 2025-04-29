@@ -1,0 +1,125 @@
+RPA Practical:
+
+Practical 4 :
+4 Types of Recording: 
+a. Basic Recording using Toolbar 
+b. Basic Recording using Notepad 
+c. Desktop Recording using Tool bar d.  
+d. Desktop Recording by creating a workflow e. 
+e. Web Recording e.g. Find the rating of the movie from imdb web site 
+f. Web Recording manually 
+
+Steps:
+Types of Recording:  
+a) Basic Recording using Toolbar and working with the toolbar  
+Install UiPath.UIAutomation.Activities  package if App/web recorder activity is missing.  
+Step -1: Select the Sequence  
+Step 2: Open Notepad in background  
+Step 3: Click on App/Web recorder  
+Step 4: Add the text that you want to display.  
+Step 5: The text will be displayed and recorded successfully.  
+Step 6: Working with the tool bar activate the “Format” and then “Font” to display the text and another font with various text sizes.   
+Step 7: Click on notepad again to capture the text area after than add again value to display the text in updated format which we have selected.  
+Step 8: Click on save button and then activate the “Debug file” button to display the output  
+Let’s Check the Output.  
+
+b) Desktop Recording using Tool bar   
+Step -1: Select the Sequence  
+Step 2: Open the Google chrome in background  
+Step 3: Drag the Use Application/Browser entity.  
+Step 4: Select the browser  
+Step 5: Select the Use Application/Browser and activate “properties” present in the left navigation.   
+Step 6: Select the Option close to “Never” and then Input Mode should be “Hardware event”.   
+Step 7: Click on App/Web recorder to record the screen   
+
+If the extension is not installed then click on “Install”. And select the screen to record it.   
+Step 8.  
+Step 9: Click on save button and then activate the “Debug file” button to display the output  
+Lets check the Output   
+
+
+ChatGPT Solution:
+
+Practical 4 – Types of Recording in UiPath
+
+a. Basic Recording Using Toolbar
+
+Objective: Record simple mouse and keyboard actions using the Basic Recorder.
+
+Steps:
+1. Open UiPath Studio.
+2. Click **Recording → Basic** from the toolbar.
+3. Perform a simple task like:
+   - Open **Notepad**
+   - Type your name
+   - Save the file (you can skip Save if you only want text entry)
+4. Click **Save & Exit**.
+5. UiPath generates the recorded activities in the sequence.
+
+
+b. Basic Recording Using Notepad
+
+Objective: Use **Basic Recorder** to automate text entry in Notepad.
+
+Steps:
+1. Open UiPath → Start **Basic Recording**.
+2. Open **Notepad** manually.
+3. In the recording:
+   - Click inside Notepad
+   - Type `"This is an RPA recording in Notepad"`
+4. Stop recording.
+5. Run the automation – it will open Notepad and type the text.
+
+
+c. Desktop Recording Using Toolbar
+
+Objective: Record actions across multiple desktop applications (e.g., Notepad + Calculator).
+
+Steps:
+1. Go to **Recording → Desktop**.
+2. In the recording session:
+   - Open **Notepad** → Type some text
+   - Open **Calculator** → Perform a simple calculation
+3. Click **Save & Exit**.
+4. Run the automation to observe actions.
+
+Note: Desktop recording is best when interacting with standard desktop apps with consistent UI elements.
+
+
+d. Desktop Recording by Creating a Workflow
+
+**Objective:** Perform the same actions **manually** (without using recorder).
+
+Steps:
+1. Create a new **Sequence**.
+2. Add **Open Application** or **Start Process**: `"notepad.exe"`
+3. Use **Type Into** activity to enter: `"Manual desktop automation"`
+4. Use **Click** or **Hotkey** activities to simulate interactions.
+
+
+e. Web Recording – Find Movie Rating on IMDb
+
+**Objective:** Use **Web Recorder** to search a movie and extract its IMDb rating.
+
+Steps:
+1. Open UiPath → **Recording → Web**.
+2. Browser: Open Chrome or Edge, go to `www.imdb.com`.
+3. In recording:
+   - Type movie name (e.g., *Inception*) in search bar
+   - Press Enter
+   - Click the correct movie
+   - Highlight and capture the rating
+4. Stop recording.
+5. Use **Get Text** activity to extract rating → Show via **Message Box**.
+
+
+f. Web Recording Manually
+
+**Objective:** Create the IMDb automation **without recorder**.
+
+Steps:
+1. Use **Open Browser**: URL = `"https://www.imdb.com"`
+2. Use **Type Into** for search bar: `"Inception"`
+3. Use **Click** to hit search result.
+4. Use **Get Text** to extract rating value.
+5. Show rating with **Message Box**.
